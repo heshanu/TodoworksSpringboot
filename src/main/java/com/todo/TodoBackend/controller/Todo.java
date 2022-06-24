@@ -36,6 +36,9 @@ public class Todo {
                 '}';
     }
 
+    public Todo() {
+    }
+
     private long id;
     private String username;
     private String description;
