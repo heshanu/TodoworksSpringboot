@@ -1,6 +1,7 @@
 package com.todo.TodoBackend.controller;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Todo {
     public Todo(long id, String username, String description, Date targetDate, boolean isDone) {
@@ -11,7 +12,17 @@ public class Todo {
         this.isDone = isDone;
     }
 
-    public Todo() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Todo todo = (Todo) o;
+        return id == todo.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
