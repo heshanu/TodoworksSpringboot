@@ -1,14 +1,21 @@
 package com.todo.TodoBackend.service;
 
 import com.todo.TodoBackend.controller.Todo;
+import com.todo.TodoBackend.repo.TodoRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoHardcodedService {
+
+    @Autowired
+    private TodoRepo todoRepo;
+
     private static List<Todo> todos = new ArrayList();
     private static int idCounter = 0;
 
@@ -29,7 +36,7 @@ public class TodoHardcodedService {
         Todo todo = findById(id);
         if (todo == null) return null;
 
-        if(todos.remove(todo)){
+        if (todos.remove(todo)) {
             return todo;
         }
         return null;
@@ -44,17 +51,43 @@ public class TodoHardcodedService {
         return null;
     }
 
-    public Todo save(Todo todo){
-        if(todo.getId()==-1){
+    public Todo save(Todo todo) {
+        if (todo.getId() == -1) {
             // TODO: 6/25/2022
             todo.setId(++idCounter);
             todos.add(todo);
-        }
-        else{
+        } else {
             deleteById(todo.getId());
             // TODO: 6/25/2022
             todos.add(todo);
         }
         return todo;
+    }
+
+    public List<Todo> getAll() {
+        return todoRepo.findAll();
+    }
+
+
+    public Todo updateTodo(Long id, Todo todoDetails) {
+        Todo getSelectedTodo=this.todoRepo.getById(id);
+
+        if(getSelectedTodo==null){
+            getSelectedTodo.setId(todoDetails.getId());
+            getSelectedTodo.setDescription(todoDetails.getDescription());
+            getSelectedTodo.setDone(todoDetails.isDone());
+            getSelectedTodo.setTargetDate(todoDetails.getTargetDate());
+            getSelectedTodo.setUsername(todoDetails.getUsername());
+        }
+        /*
+           // getSelectedTodo.setId(todoDetails.getId());
+            getSelectedTodo.setDescription(todoDetails.getDescription());
+            getSelectedTodo.setDone(todoDetails.isDone());
+            getSelectedTodo.setTargetDate(todoDetails.getTargetDate());
+            getSelectedTodo.setUsername(todoDetails.getUsername());
+        }
+
+        return this.todoRepo.save(getSelectedTodo);*/
+        return this.todoRepo.save(getSelectedTodo);
     }
 }

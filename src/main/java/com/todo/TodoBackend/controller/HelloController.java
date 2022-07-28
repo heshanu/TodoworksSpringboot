@@ -22,6 +22,4 @@ public class HelloController {
         return new HelloWorlBean(String.format("hello world ,%s",name));
     }
 
-
-
 }
